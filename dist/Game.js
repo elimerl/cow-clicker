@@ -40,10 +40,10 @@ export class Game {
       this.state[key] = save.state[key];
     });
     Object.keys(BuildingsAsString).forEach((key) => {
-      if (save.buildings[key])
+      if (save.buildings[key]) {
         BuildingsAsString[key].count = save.buildings[key].count;
-      if (save.buildings[key].cost)
         BuildingsAsString[key].cost = save.buildings[key].cost;
+      }
     });
   }
   click() {
