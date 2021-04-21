@@ -48,6 +48,6 @@ export class CowAssimilator extends Building {
 }
 export class CowFactory extends Building {
   cost = 1000000;
-  cps = 100000;
+  cps = 1000000;
   tooltip = "A factory that builds cows. GMO-free!";
 }
