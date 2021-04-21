@@ -7,13 +7,9 @@ import {
   CowAssimilator,
   CowFactory,
   CowHax,
+  CowInator,
 } from "./Building";
 
-declare global {
-  interface Window {
-    game: Game;
-  }
-}
 export const Buildings = {
   CowMaker: new CowMaker(),
   CowPrinter: new CowPrinter(),
@@ -22,7 +18,15 @@ export const Buildings = {
   CowAssimilator: new CowAssimilator(),
   CowFactory: new CowFactory(),
   CowHax: new CowHax(),
+  CowInator: new CowInator(),
 };
+declare global {
+  interface Window {
+    game: Game;
+    Buildings: typeof Buildings;
+  }
+}
+window.Buildings = Buildings;
 export const BuildingsAsString: Record<string, Building> = Buildings;
 const defaultGameState: GameState = {
   cows: 0,

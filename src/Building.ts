@@ -56,3 +56,9 @@ export class CowHax extends Building {
   cps = 4000000;
   tooltip = "Hacks the game to quadruple the factories.";
 }
+export class CowInator extends Building {
+  cost = 100000000;
+  cps = 10000000;
+  tooltip =
+    "*Phineas and Ferb theme plays* Behold, the cow-inator! It makes MANY cows!";
+}
