@@ -38,7 +38,7 @@ function get_each_context(ctx, list, i) {
 	return child_ctx;
 }
 
-// (99:6) {#each Object.keys(Buildings) as key}
+// (103:6) {#each Object.keys(Buildings) as key}
 function create_each_block(ctx) {
 	let li;
 	let button;
@@ -51,6 +51,7 @@ function create_each_block(ctx) {
 	let t4_value = nFormatter(BuildingsAsString[/*key*/ ctx[13]].cost) + "";
 	let t4;
 	let t5;
+	let button_style_value;
 	let key = /*key*/ ctx[13];
 	let t6;
 	let mounted;
@@ -82,7 +83,13 @@ function create_each_block(ctx) {
 			t4 = text(t4_value);
 			t5 = text(" cows");
 			t6 = space();
-			attr(button, "class", "svelte-l1kj7r");
+
+			attr(button, "style", button_style_value = /*game*/ ctx[1].state.cows <= BuildingsAsString[/*key*/ ctx[13]].cost
+			? "background-color:#666;"
+			: "");
+
+			attr(button, "class", "svelte-2ayfn");
+			attr(li, "class", "svelte-2ayfn");
 		},
 		m(target, anchor) {
 			insert(target, li, anchor);
@@ -111,6 +118,12 @@ function create_each_block(ctx) {
 			if (dirty & /*Buildings*/ 1 && t0_value !== (t0_value = /*key*/ ctx[13] + "")) set_data(t0, t0_value);
 			if (dirty & /*Buildings*/ 1 && t2_value !== (t2_value = BuildingsAsString[/*key*/ ctx[13]].count + "")) set_data(t2, t2_value);
 			if (dirty & /*Buildings*/ 1 && t4_value !== (t4_value = nFormatter(BuildingsAsString[/*key*/ ctx[13]].cost) + "")) set_data(t4, t4_value);
+
+			if (dirty & /*game, Buildings*/ 3 && button_style_value !== (button_style_value = /*game*/ ctx[1].state.cows <= BuildingsAsString[/*key*/ ctx[13]].cost
+			? "background-color:#666;"
+			: "")) {
+				attr(button, "style", button_style_value);
+			}
 
 			if (key !== /*key*/ ctx[13]) {
 				unassign_button();
@@ -145,8 +158,8 @@ function create_fragment(ctx) {
 	let div1;
 	let t8;
 	let div3;
-	let t9;
 	let ul;
+	let t9;
 	let mounted;
 	let dispose;
 	let each_value = Object.keys(/*Buildings*/ ctx[0]);
@@ -173,17 +186,18 @@ function create_fragment(ctx) {
 			div1.innerHTML = `<div>🐄</div>`;
 			t8 = space();
 			div3 = element("div");
-			t9 = text("Stuff to buy\n    ");
 			ul = element("ul");
+			t9 = text("Stuff to buy\n      ");
 
 			for (let i = 0; i < each_blocks.length; i += 1) {
 				each_blocks[i].c();
 			}
 
-			attr(div1, "class", "big-cow-click svelte-l1kj7r");
-			attr(div2, "class", "big-cow svelte-l1kj7r");
-			attr(div3, "class", "store svelte-l1kj7r");
-			attr(div4, "class", "App svelte-l1kj7r");
+			attr(div1, "class", "big-cow-click svelte-2ayfn");
+			attr(div2, "class", "big-cow svelte-2ayfn");
+			attr(ul, "class", "svelte-2ayfn");
+			attr(div3, "class", "store svelte-2ayfn");
+			attr(div4, "class", "App svelte-2ayfn");
 		},
 		m(target, anchor) {
 			insert(target, div4, anchor);
@@ -200,8 +214,8 @@ function create_fragment(ctx) {
 			append(div2, div1);
 			append(div4, t8);
 			append(div4, div3);
-			append(div3, t9);
 			append(div3, ul);
+			append(ul, t9);
 
 			for (let i = 0; i < each_blocks.length; i += 1) {
 				each_blocks[i].m(ul, null);
@@ -217,7 +231,7 @@ function create_fragment(ctx) {
 			if (dirty & /*game*/ 2 && t2_value !== (t2_value = (/*game*/ ctx[1].state.cows === 1 ? "" : "s") + "")) set_data(t2, t2_value);
 			if (dirty & /*game*/ 2 && t4_value !== (t4_value = nFormatter(/*game*/ ctx[1].getCps()) + "")) set_data(t4, t4_value);
 
-			if (dirty & /*buttons, Object, Buildings, showTooltip, BuildingsAsString, game, updateState, nFormatter*/ 31) {
+			if (dirty & /*game, BuildingsAsString, Object, Buildings, buttons, showTooltip, updateState, nFormatter*/ 31) {
 				each_value = Object.keys(/*Buildings*/ ctx[0]);
 				let i;
 
@@ -278,10 +292,11 @@ function instance($$self, $$props, $$invalidate) {
 	onMount(() => {
 		Object.keys(buttons).forEach(key => {
 			tippy(buttons[key], {
-				content: BuildingsAsString[key].tooltip,
+				content: BuildingsAsString[key].tooltip + " " + nFormatter(BuildingsAsString[key].cps) + " cows per second",
 				placement: "right",
 				arrow: false,
-				theme: "black"
+				theme: "black",
+				maxWidth: "400em"
 			});
 		});
 	});

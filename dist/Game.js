@@ -3,14 +3,16 @@ import {
   CowMaker,
   CowPrinter,
   Macro,
-  CowAssimilator
+  CowAssimilator,
+  CowFactory
 } from "./Building.js";
 export const Buildings = {
   CowMaker: new CowMaker(),
   CowPrinter: new CowPrinter(),
   CowDuplicator: new CowDuplicator(),
   Macro: new Macro(),
-  CowAssimilator: new CowAssimilator()
+  CowAssimilator: new CowAssimilator(),
+  CowFactory: new CowFactory()
 };
 export const BuildingsAsString = Buildings;
 const defaultGameState = {

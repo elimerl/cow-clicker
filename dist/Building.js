@@ -57,3 +57,11 @@ export class CowAssimilator extends Building {
     this.tooltip = "Assimilates people into the Cow Collective and turns them into cows. This is ethical, rightttt?";
   }
 }
+export class CowFactory extends Building {
+  constructor() {
+    super(...arguments);
+    this.cost = 1e6;
+    this.cps = 1e5;
+    this.tooltip = "A factory that builds cows. GMO-free!";
+  }
+}
