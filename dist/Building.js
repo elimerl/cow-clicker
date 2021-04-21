@@ -81,3 +81,11 @@ export class CowInator extends Building {
     this.tooltip = "*Phineas and Ferb theme plays* Behold, the cow-inator! It makes MANY cows!";
   }
 }
+export class CowMaker2 extends Building {
+  constructor() {
+    super(...arguments);
+    this.cost = 1e11;
+    this.cps = 1e9;
+    this.tooltip = "The sequel to the CowMaker! Makes many cows.";
+  }
+}
