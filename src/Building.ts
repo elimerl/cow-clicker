@@ -27,10 +27,22 @@ export class CowMaker extends Building {
 export class CowPrinter extends Building {
   cost = 500;
   cps = 20;
-  tooltip = "A 3D printer to print out cows. Look, it works, don't touch it.";
+  tooltip = "A 3D printer to print out cows. Does magic somehow.";
 }
 export class CowDuplicator extends Building {
   cost = 1200;
   cps = 100;
   tooltip = "Turns one cow into four! It's Magic™.";
+}
+
+export class Macro extends Building {
+  cost = 10000;
+  cps = 1000;
+  tooltip = "Buy a gaming chair and macro your way to victory!";
+}
+export class CowAssimilator extends Building {
+  cost = 10000;
+  cps = 75000;
+  tooltip =
+    "Assimilates people into the Cow Collective and turns them into cows. This is ethical, rightttt?";
 }

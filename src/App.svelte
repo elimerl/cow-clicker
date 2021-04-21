@@ -5,7 +5,8 @@
 
   import Toastify from "toastify-js";
   import "toastify-js/src/toastify.css";
-  import { createPopperActions } from "svelte-popperjs";
+  import tippy from "tippy.js";
+  import "tippy.js/dist/tippy.css"; // optional for styling
 
   const game = new Game((text) => {
     Toastify({
@@ -20,13 +21,7 @@
   if (localStorage.getItem("save"))
     game.decodeState(localStorage.getItem("save") as string);
   window.game = game;
-  let count: number = 0;
-  onMount(() => {
-    const interval = setInterval(() => count++, 1000);
-    return () => {
-      clearInterval(interval);
-    };
-  });
+
   if (import.meta.hot) {
     import.meta.hot.dispose(() => {
       localStorage.setItem("save", game.encodeState());
@@ -34,6 +29,18 @@
   }
 
   let showTooltip: Record<string, boolean> = {};
+  let buttons: Record<string, HTMLButtonElement> = {};
+
+  onMount(() => {
+    Object.keys(buttons).forEach((key) => {
+      tippy(buttons[key], {
+        content: BuildingsAsString[key].tooltip,
+        placement: "right",
+        arrow: false,
+        theme: "black",
+      });
+    });
+  });
   function updateState() {
     game.state.cows = game.state.cows;
     Object.keys(Buildings).forEach((key) => {
@@ -52,7 +59,6 @@
   }
   let longTimeNoSee: number;
   document.onvisibilitychange = (ev) => {
-    console.log(document.hidden);
     if (document.hidden) {
       longTimeNoSee = Date.now();
       localStorage.setItem("save", game.encodeState());
@@ -104,19 +110,21 @@
       {#each Object.keys(Buildings) as key}
         <li>
           <button
-            on:mouseenter={() => (showTooltip[key] = true)}
-            on:mouseleave={() => (showTooltip[key] = false)}
+            on:mouseenter={() => {
+              showTooltip[key] = true;
+            }}
+            on:mouseleave={() => {
+              showTooltip[key] = false;
+            }}
             on:click={() => {
               BuildingsAsString[key].buy(game);
               updateState();
             }}
+            bind:this={buttons[key]}
             >{key} ({BuildingsAsString[key].count}) - {nFormatter(
               BuildingsAsString[key].cost
             )} cows
           </button>
-          {#if showTooltip[key]}
-            <div class="tooltip">{BuildingsAsString[key].tooltip}</div>
-          {/if}
         </li>
       {/each}
     </ul>
@@ -158,6 +166,14 @@
     top: 10px;
     position: absolute;
   }
+  button {
+    background-color: #222;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+  }
   @keyframes scale-easeOutElastic {
     0% {
       transform: scale(1);
@@ -170,14 +186,8 @@
       transform: scale(1);
     }
   }
-  .tooltip {
-    background-color: #222;
+  :global(.tippy-box[data-theme~="black"]) {
+    background-color: black;
     color: white;
-    padding: 5px 10px;
-    border-radius: 2px;
-    font-size: 13px;
-    z-index: 1;
-    margin-top: 4px;
-    position: absolute;
   }
 </style>
