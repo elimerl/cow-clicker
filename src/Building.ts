@@ -48,6 +48,11 @@ export class CowAssimilator extends Building {
 }
 export class CowFactory extends Building {
   cost = 1000000;
-  cps = 1000000;
+  cps = 100000;
   tooltip = "A factory that builds cows. GMO-free!";
+}
+export class CowHax extends Building {
+  cost = 4000000;
+  cps = 4000000;
+  tooltip = "Hacks the game to quadruple the factories.";
 }
