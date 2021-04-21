@@ -18,6 +18,6 @@ export function nFormatter(num: number) {
     }
   }
   return (
-    (Math.floor(num) / si[i].value).toFixed(2).replace(rx, "$1") + si[i].symbol
+    (Math.floor(num) / si[i].value).toFixed(1).replace(rx, "$1") + si[i].symbol
   );
 }

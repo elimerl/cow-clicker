@@ -46,3 +46,8 @@ export class CowAssimilator extends Building {
   tooltip =
     "Assimilates people into the Cow Collective and turns them into cows. This is ethical, rightttt?";
 }
+export class CowFactory extends Building {
+  cost = 1000000;
+  cps = 100000;
+  tooltip = "A factory that builds cows. GMO-free!";
+}

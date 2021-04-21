@@ -34,10 +34,15 @@
   onMount(() => {
     Object.keys(buttons).forEach((key) => {
       tippy(buttons[key], {
-        content: BuildingsAsString[key].tooltip,
+        content:
+          BuildingsAsString[key].tooltip +
+          " " +
+          nFormatter(BuildingsAsString[key].cps) +
+          " cows per second",
         placement: "right",
         arrow: false,
         theme: "black",
+        maxWidth: "400em",
       });
     });
   });
@@ -105,11 +110,14 @@
     </div>
   </div>
   <div class="store">
-    Stuff to buy
     <ul>
+      Stuff to buy
       {#each Object.keys(Buildings) as key}
         <li>
           <button
+            style={game.state.cows <= BuildingsAsString[key].cost
+              ? "background-color:#666;"
+              : ""}
             on:mouseenter={() => {
               showTooltip[key] = true;
             }}
@@ -132,9 +140,10 @@
 </div>
 
 <style>
-  :global(body) {
+  :global(*) {
     margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+      Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   }
   .App {
     text-align: center;
@@ -173,6 +182,7 @@
     border-radius: 4px;
     padding: 0.5rem;
     margin-top: 0.5rem;
+    transition: background-color 0.2s;
   }
   @keyframes scale-easeOutElastic {
     0% {
@@ -189,5 +199,15 @@
   :global(.tippy-box[data-theme~="black"]) {
     background-color: black;
     color: white;
+  }
+  li {
+    margin: 0;
+    padding: 0;
+  }
+  ul {
+    margin: 0;
+    margin-left: 10px;
+    list-style: none;
+    padding: 0;
   }
 </style>

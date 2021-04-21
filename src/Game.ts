@@ -5,6 +5,7 @@ import {
   CowPrinter,
   Macro,
   CowAssimilator,
+  CowFactory,
 } from "./Building";
 
 declare global {
@@ -18,6 +19,7 @@ export const Buildings = {
   CowDuplicator: new CowDuplicator(),
   Macro: new Macro(),
   CowAssimilator: new CowAssimilator(),
+  CowFactory: new CowFactory(),
 };
 export const BuildingsAsString: Record<string, Building> = Buildings;
 const defaultGameState: GameState = {
