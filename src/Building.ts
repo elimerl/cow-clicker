@@ -41,7 +41,7 @@ export class Macro extends Building {
   tooltip = "Buy a gaming chair and macro your way to victory!";
 }
 export class CowAssimilator extends Building {
-  cost = 10000;
+  cost = 100000;
   cps = 75000;
   tooltip =
     "Assimilates people into the Cow Collective and turns them into cows. This is ethical, rightttt?";
