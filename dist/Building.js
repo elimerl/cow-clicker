@@ -52,7 +52,7 @@ export class Macro extends Building {
 export class CowAssimilator extends Building {
   constructor() {
     super(...arguments);
-    this.cost = 1e4;
+    this.cost = 1e5;
     this.cps = 75e3;
     this.tooltip = "Assimilates people into the Cow Collective and turns them into cows. This is ethical, rightttt?";
   }
