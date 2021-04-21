@@ -4,7 +4,8 @@ import {
   CowPrinter,
   Macro,
   CowAssimilator,
-  CowFactory
+  CowFactory,
+  CowHax
 } from "./Building.js";
 export const Buildings = {
   CowMaker: new CowMaker(),
@@ -12,7 +13,8 @@ export const Buildings = {
   CowDuplicator: new CowDuplicator(),
   Macro: new Macro(),
   CowAssimilator: new CowAssimilator(),
-  CowFactory: new CowFactory()
+  CowFactory: new CowFactory(),
+  CowHax: new CowHax()
 };
 export const BuildingsAsString = Buildings;
 const defaultGameState = {
