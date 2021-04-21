@@ -32,5 +32,5 @@ export function nFormatter(num) {
       break;
     }
   }
-  return (num / si[i].value).toLocaleString("fullwide", {useGrouping: false}).replace(rx, "$1") + si[i].symbol;
+  return Math.floor(num / si[i].value).toLocaleString("fullwide", {useGrouping: false}).replace(rx, "$1") + si[i].symbol;
 }

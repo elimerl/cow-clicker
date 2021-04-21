@@ -7,7 +7,8 @@ import {
   CowFactory,
   CowHax,
   CowInator,
-  CowMaker2
+  CowMaker2,
+  DarkMatterToCow
 } from "./Building.js";
 export const Buildings = {
   CowMaker: new CowMaker(),
@@ -18,7 +19,8 @@ export const Buildings = {
   CowFactory: new CowFactory(),
   CowHax: new CowHax(),
   CowInator: new CowInator(),
-  CowMaker2: new CowMaker2()
+  CowMaker2: new CowMaker2(),
+  DarkMatterToCow: new DarkMatterToCow()
 };
 window.Buildings = Buildings;
 export const BuildingsAsString = Buildings;

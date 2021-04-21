@@ -81,11 +81,27 @@ export class CowInator extends Building {
     this.tooltip = "*Phineas and Ferb theme plays* Behold, the cow-inator! It makes MANY cows!";
   }
 }
+export class CowCursor extends Building {
+  constructor() {
+    super(...arguments);
+    this.cost = 1e9;
+    this.cps = 1e8;
+    this.tooltip = "A mouse cursor you hired to get MOAR COWS. The cow factory must grow...";
+  }
+}
 export class CowMaker2 extends Building {
   constructor() {
     super(...arguments);
     this.cost = 1e11;
     this.cps = 1e9;
     this.tooltip = "The sequel to the CowMaker! Makes many cows.";
+  }
+}
+export class DarkMatterToCow extends Building {
+  constructor() {
+    super(...arguments);
+    this.cost = 1e12;
+    this.cps = 1e10;
+    this.tooltip = "Turns dark matter into cows.";
   }
 }
