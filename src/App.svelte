@@ -14,7 +14,6 @@
       text,
       gravity: "bottom", // `top` or `bottom`
       position: "center", // `left`, `center` or `right`
-      backgroundColor: "#222",
       close: true,
     }).showToast();
   });
@@ -117,7 +116,7 @@
           <button
             style={game.state.cows <= BuildingsAsString[key].cost
               ? "background-color:#666;"
-              : ""}
+              : "cursor:pointer"}
             on:mouseenter={() => {
               showTooltip[key] = true;
             }}
@@ -129,7 +128,8 @@
               updateState();
             }}
             bind:this={buttons[key]}
-            >{key} ({BuildingsAsString[key].count}) - {nFormatter(
+          >
+            {key} ({BuildingsAsString[key].count}) - {nFormatter(
               BuildingsAsString[key].cost
             )} cows
           </button>

@@ -33,7 +33,7 @@ export function nFormatter(num: number) {
     }
   }
   return (
-    (num / si[i].value)
+    Math.floor(num / si[i].value)
       .toLocaleString("fullwide", { useGrouping: false })
       .replace(rx, "$1") + si[i].symbol
   );
