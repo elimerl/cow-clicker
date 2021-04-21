@@ -1,4 +1,5 @@
 import type { Game } from "./Game";
+const onUnlock: ((bldg: Building) => void)[] = [];
 
 export abstract class Building {
   cost = 0;
@@ -18,8 +19,9 @@ export abstract class Building {
   }
   tick(game: Game, seconds: number) {
     game.state.cows += this.cps * seconds * this.count;
-    if (game.state.cows >= this.cost) {
+    if (game.state.cows >= this.cost && !this.unlocked) {
       this.unlocked = true;
+      onUnlock.forEach((v) => v(this));
     }
   }
 }
@@ -82,3 +84,6 @@ export class DarkMatterToCow extends Building {
   cps = 10000000000;
   tooltip = "Turns dark matter into cows.";
 }
+export const onUnlockListen = (cb: (bldg: Building) => void) => {
+  onUnlock.push(cb);
+};

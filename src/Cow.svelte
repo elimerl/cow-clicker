@@ -8,6 +8,7 @@
   import tippy from "tippy.js";
   import "tippy.js/dist/tippy.css"; // optional for styling
   import { fly, fade } from "svelte/transition";
+  import { onUnlockListen } from "./Building";
 
   const game = new Game((text) => {
     Toastify({
@@ -31,7 +32,18 @@
   }
   let showTooltip: Record<string, boolean> = {};
   let buttons: Record<string, HTMLButtonElement> = {};
-
+  onUnlockListen((bldg) => {
+    const key = bldg.constructor.name;
+    setTimeout(() => {
+      tippy(buttons[key], {
+        content: bldg.tooltip + " " + nFormatter(bldg.cps) + " cows per second",
+        placement: "right",
+        arrow: false,
+        theme: "black",
+        maxWidth: "400em",
+      });
+    }, 16);
+  });
   onMount(() => {
     Object.keys(buttons).forEach((key) => {
       let content =
@@ -117,8 +129,7 @@
     <ul>
       Stuff to buy
       {#each Object.keys(Buildings) as key}
-        <li>
-          {#if BuildingsAsString[key].unlocked}
+        {#if BuildingsAsString[key].unlocked}<li>
             <button
               on:mouseenter={() => {
                 showTooltip[key] = true;
@@ -137,12 +148,11 @@
               in:fly={{ y: 200, duration: 1000 }}
               out:fade
             >
-              {key} ({BuildingsAsString[key].count}) - {nFormatter(
-                BuildingsAsString[key].cost
-              )} cows
+              {key} ({BuildingsAsString[key].count.toLocaleString("fullwide", {
+                useGrouping: false,
+              })}) - {nFormatter(BuildingsAsString[key].cost)} cows
             </button>
-          {/if}
-        </li>
+          </li>{/if}
       {/each}
       {#if game.state.cows >= 100000000000000}
         <li>
