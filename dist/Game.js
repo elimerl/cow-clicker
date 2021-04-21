@@ -32,6 +32,13 @@ export class Game {
     this.notify = notify;
     this.state = JSON.parse(JSON.stringify(defaultGameState));
   }
+  wipeSave() {
+    localStorage.removeItem("save");
+    this.state.cows = 0;
+    Object.keys(Buildings).forEach((v) => {
+      Buildings[v] = new BuildingsAsString[v].constructor();
+    });
+  }
   encodeState() {
     return toBinary(JSON.stringify(this.getSave()));
   }
@@ -47,6 +54,7 @@ export class Game {
       if (save.buildings[key]) {
         BuildingsAsString[key].count = save.buildings[key].count;
         BuildingsAsString[key].cost = save.buildings[key].cost;
+        BuildingsAsString[key].unlocked = save.buildings[key].unlocked;
       }
     });
   }

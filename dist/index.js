@@ -1,7 +1,7 @@
 import * as __SNOWPACK_ENV__ from '../_snowpack/env.js';
 import.meta.env = __SNOWPACK_ENV__;
 
-import App from "./App.svelte.js";
+import App from "./Cow.svelte.js";
 var app = new App({
   target: document.body
 });

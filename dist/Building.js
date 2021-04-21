@@ -3,6 +3,7 @@ export class Building {
     this.cost = 0;
     this.cps = 0;
     this.count = 0;
+    this.unlocked = false;
   }
   buy(game) {
     if (game.state.cows >= this.cost) {
@@ -10,11 +11,14 @@ export class Building {
       this.cost *= 1.2;
       this.count++;
     } else {
-      game.notify("You can't afford this!");
+      game.notify(`You can't afford a ${this.constructor.name}!`);
     }
   }
   tick(game, seconds) {
     game.state.cows += this.cps * seconds * this.count;
+    if (game.state.cows >= this.cost) {
+      this.unlocked = true;
+    }
   }
 }
 export class CowMaker extends Building {
