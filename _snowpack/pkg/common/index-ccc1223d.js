@@ -242,4 +242,4 @@ class SvelteComponent {
   }
 }
 
-export { SvelteComponent as S, append as a, attr as b, detach as c, destroy_each as d, element as e, insert as f, set_data as g, space as h, init as i, listen as l, noop as n, onMount as o, run_all as r, safe_not_equal as s, text as t };
+export { SvelteComponent as S, append as a, attr as b, binding_callbacks as c, destroy_each as d, detach as e, element as f, insert as g, set_data as h, init as i, space as j, listen as l, noop as n, onMount as o, run_all as r, safe_not_equal as s, text as t };

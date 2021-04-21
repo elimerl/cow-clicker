@@ -30,7 +30,7 @@ export class CowPrinter extends Building {
     super(...arguments);
     this.cost = 500;
     this.cps = 20;
-    this.tooltip = "A 3D printer to print out cows. Look, it works, don't touch it.";
+    this.tooltip = "A 3D printer to print out cows. Does magic somehow.";
   }
 }
 export class CowDuplicator extends Building {
@@ -39,5 +39,21 @@ export class CowDuplicator extends Building {
     this.cost = 1200;
     this.cps = 100;
     this.tooltip = "Turns one cow into four! It's Magic™.";
+  }
+}
+export class Macro extends Building {
+  constructor() {
+    super(...arguments);
+    this.cost = 1e4;
+    this.cps = 1e3;
+    this.tooltip = "Buy a gaming chair and macro your way to victory!";
+  }
+}
+export class CowAssimilator extends Building {
+  constructor() {
+    super(...arguments);
+    this.cost = 1e4;
+    this.cps = 75e3;
+    this.tooltip = "Assimilates people into the Cow Collective and turns them into cows. This is ethical, rightttt?";
   }
 }

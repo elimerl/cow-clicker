@@ -7,6 +7,7 @@ import {
 	SvelteComponent,
 	append,
 	attr,
+	binding_callbacks,
 	destroy_each,
 	detach,
 	element,
@@ -26,70 +27,49 @@ import { Buildings, BuildingsAsString, Game } from "./Game.js";
 import { nFormatter } from "./util.js";
 import Toastify from "../_snowpack/pkg/toastify-js.js";
 import "../_snowpack/pkg/toastify-js/src/toastify.css.proxy.js";
-import { createPopperActions } from "../_snowpack/pkg/svelte-popperjs.js";
+import tippy from "../_snowpack/pkg/tippyjs.js";
+import "../_snowpack/pkg/tippyjs/dist/tippy.css.proxy.js";
 
 function get_each_context(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[12] = list[i];
+	child_ctx[13] = list[i];
+	child_ctx[14] = list;
+	child_ctx[15] = i;
 	return child_ctx;
 }
 
-// (108:10) {#if showTooltip[key]}
-function create_if_block(ctx) {
-	let div;
-	let t_value = BuildingsAsString[/*key*/ ctx[12]].tooltip + "";
-	let t;
-
-	return {
-		c() {
-			div = element("div");
-			t = text(t_value);
-			attr(div, "class", "tooltip svelte-szu782");
-		},
-		m(target, anchor) {
-			insert(target, div, anchor);
-			append(div, t);
-		},
-		p(ctx, dirty) {
-			if (dirty & /*Buildings*/ 1 && t_value !== (t_value = BuildingsAsString[/*key*/ ctx[12]].tooltip + "")) set_data(t, t_value);
-		},
-		d(detaching) {
-			if (detaching) detach(div);
-		}
-	};
-}
-
-// (95:6) {#each Object.keys(Buildings) as key}
+// (99:6) {#each Object.keys(Buildings) as key}
 function create_each_block(ctx) {
 	let li;
 	let button;
-	let t0_value = /*key*/ ctx[12] + "";
+	let t0_value = /*key*/ ctx[13] + "";
 	let t0;
 	let t1;
-	let t2_value = BuildingsAsString[/*key*/ ctx[12]].count + "";
+	let t2_value = BuildingsAsString[/*key*/ ctx[13]].count + "";
 	let t2;
 	let t3;
-	let t4_value = nFormatter(BuildingsAsString[/*key*/ ctx[12]].cost) + "";
+	let t4_value = nFormatter(BuildingsAsString[/*key*/ ctx[13]].cost) + "";
 	let t4;
 	let t5;
+	let key = /*key*/ ctx[13];
 	let t6;
-	let t7;
 	let mounted;
 	let dispose;
 
 	function mouseenter_handler() {
-		return /*mouseenter_handler*/ ctx[5](/*key*/ ctx[12]);
+		return /*mouseenter_handler*/ ctx[6](/*key*/ ctx[13]);
 	}
 
 	function mouseleave_handler() {
-		return /*mouseleave_handler*/ ctx[6](/*key*/ ctx[12]);
+		return /*mouseleave_handler*/ ctx[7](/*key*/ ctx[13]);
 	}
 
 	function click_handler_1() {
-		return /*click_handler_1*/ ctx[7](/*key*/ ctx[12]);
+		return /*click_handler_1*/ ctx[8](/*key*/ ctx[13]);
 	}
 
-	let if_block = /*showTooltip*/ ctx[2][/*key*/ ctx[12]] && create_if_block(ctx);
+	const assign_button = () => /*button_binding*/ ctx[9](button, key);
+	const unassign_button = () => /*button_binding*/ ctx[9](null, key);
 
 	return {
 		c() {
@@ -102,8 +82,7 @@ function create_each_block(ctx) {
 			t4 = text(t4_value);
 			t5 = text(" cows");
 			t6 = space();
-			if (if_block) if_block.c();
-			t7 = space();
+			attr(button, "class", "svelte-l1kj7r");
 		},
 		m(target, anchor) {
 			insert(target, li, anchor);
@@ -114,9 +93,8 @@ function create_each_block(ctx) {
 			append(button, t3);
 			append(button, t4);
 			append(button, t5);
+			assign_button();
 			append(li, t6);
-			if (if_block) if_block.m(li, null);
-			append(li, t7);
 
 			if (!mounted) {
 				dispose = [
@@ -130,26 +108,19 @@ function create_each_block(ctx) {
 		},
 		p(new_ctx, dirty) {
 			ctx = new_ctx;
-			if (dirty & /*Buildings*/ 1 && t0_value !== (t0_value = /*key*/ ctx[12] + "")) set_data(t0, t0_value);
-			if (dirty & /*Buildings*/ 1 && t2_value !== (t2_value = BuildingsAsString[/*key*/ ctx[12]].count + "")) set_data(t2, t2_value);
-			if (dirty & /*Buildings*/ 1 && t4_value !== (t4_value = nFormatter(BuildingsAsString[/*key*/ ctx[12]].cost) + "")) set_data(t4, t4_value);
+			if (dirty & /*Buildings*/ 1 && t0_value !== (t0_value = /*key*/ ctx[13] + "")) set_data(t0, t0_value);
+			if (dirty & /*Buildings*/ 1 && t2_value !== (t2_value = BuildingsAsString[/*key*/ ctx[13]].count + "")) set_data(t2, t2_value);
+			if (dirty & /*Buildings*/ 1 && t4_value !== (t4_value = nFormatter(BuildingsAsString[/*key*/ ctx[13]].cost) + "")) set_data(t4, t4_value);
 
-			if (/*showTooltip*/ ctx[2][/*key*/ ctx[12]]) {
-				if (if_block) {
-					if_block.p(ctx, dirty);
-				} else {
-					if_block = create_if_block(ctx);
-					if_block.c();
-					if_block.m(li, t7);
-				}
-			} else if (if_block) {
-				if_block.d(1);
-				if_block = null;
+			if (key !== /*key*/ ctx[13]) {
+				unassign_button();
+				key = /*key*/ ctx[13];
+				assign_button();
 			}
 		},
 		d(detaching) {
 			if (detaching) detach(li);
-			if (if_block) if_block.d();
+			unassign_button();
 			mounted = false;
 			run_all(dispose);
 		}
@@ -209,10 +180,10 @@ function create_fragment(ctx) {
 				each_blocks[i].c();
 			}
 
-			attr(div1, "class", "big-cow-click svelte-szu782");
-			attr(div2, "class", "big-cow svelte-szu782");
-			attr(div3, "class", "store svelte-szu782");
-			attr(div4, "class", "App svelte-szu782");
+			attr(div1, "class", "big-cow-click svelte-l1kj7r");
+			attr(div2, "class", "big-cow svelte-l1kj7r");
+			attr(div3, "class", "store svelte-l1kj7r");
+			attr(div4, "class", "App svelte-l1kj7r");
 		},
 		m(target, anchor) {
 			insert(target, div4, anchor);
@@ -237,7 +208,7 @@ function create_fragment(ctx) {
 			}
 
 			if (!mounted) {
-				dispose = listen(div1, "click", /*click_handler*/ ctx[4]);
+				dispose = listen(div1, "click", /*click_handler*/ ctx[5]);
 				mounted = true;
 			}
 		},
@@ -246,7 +217,7 @@ function create_fragment(ctx) {
 			if (dirty & /*game*/ 2 && t2_value !== (t2_value = (/*game*/ ctx[1].state.cows === 1 ? "" : "s") + "")) set_data(t2, t2_value);
 			if (dirty & /*game*/ 2 && t4_value !== (t4_value = nFormatter(/*game*/ ctx[1].getCps()) + "")) set_data(t4, t4_value);
 
-			if (dirty & /*BuildingsAsString, Object, Buildings, showTooltip, game, updateState, nFormatter*/ 15) {
+			if (dirty & /*buttons, Object, Buildings, showTooltip, BuildingsAsString, game, updateState, nFormatter*/ 31) {
 				each_value = Object.keys(/*Buildings*/ ctx[0]);
 				let i;
 
@@ -294,15 +265,6 @@ function instance($$self, $$props, $$invalidate) {
 
 	if (localStorage.getItem("save")) game.decodeState(localStorage.getItem("save"));
 	window.game = game;
-	let count = 0;
-
-	onMount(() => {
-		const interval = setInterval(() => count++, 1000);
-
-		return () => {
-			clearInterval(interval);
-		};
-	});
 
 	if (undefined /* [snowpack] import.meta.hot */ ) {
 		undefined /* [snowpack] import.meta.hot */ .dispose(() => {
@@ -311,6 +273,18 @@ function instance($$self, $$props, $$invalidate) {
 	}
 
 	let showTooltip = {};
+	let buttons = {};
+
+	onMount(() => {
+		Object.keys(buttons).forEach(key => {
+			tippy(buttons[key], {
+				content: BuildingsAsString[key].tooltip,
+				placement: "right",
+				arrow: false,
+				theme: "black"
+			});
+		});
+	});
 
 	function updateState() {
 		$$invalidate(1, game);
@@ -336,8 +310,6 @@ function instance($$self, $$props, $$invalidate) {
 	let longTimeNoSee;
 
 	document.onvisibilitychange = ev => {
-		console.log(document.hidden);
-
 		if (document.hidden) {
 			longTimeNoSee = Date.now();
 			localStorage.setItem("save", game.encodeState());
@@ -377,23 +349,38 @@ function instance($$self, $$props, $$invalidate) {
 		updateState();
 	};
 
-	const mouseenter_handler = key => $$invalidate(2, showTooltip[key] = true, showTooltip);
-	const mouseleave_handler = key => $$invalidate(2, showTooltip[key] = false, showTooltip);
+	const mouseenter_handler = key => {
+		$$invalidate(2, showTooltip[key] = true, showTooltip);
+	};
+
+	const mouseleave_handler = key => {
+		$$invalidate(2, showTooltip[key] = false, showTooltip);
+	};
 
 	const click_handler_1 = key => {
 		BuildingsAsString[key].buy(game);
 		updateState();
 	};
 
+	function button_binding($$value, key) {
+		binding_callbacks[$$value ? "unshift" : "push"](() => {
+			buttons[key] = $$value;
+			$$invalidate(3, buttons);
+			$$invalidate(0, Buildings);
+		});
+	}
+
 	return [
 		Buildings,
 		game,
 		showTooltip,
+		buttons,
 		updateState,
 		click_handler,
 		mouseenter_handler,
 		mouseleave_handler,
-		click_handler_1
+		click_handler_1,
+		button_binding
 	];
 }
 

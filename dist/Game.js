@@ -1,8 +1,16 @@
-import {CowDuplicator, CowMaker, CowPrinter} from "./Building.js";
+import {
+  CowDuplicator,
+  CowMaker,
+  CowPrinter,
+  Macro,
+  CowAssimilator
+} from "./Building.js";
 export const Buildings = {
   CowMaker: new CowMaker(),
   CowPrinter: new CowPrinter(),
-  CowDuplicator: new CowDuplicator()
+  CowDuplicator: new CowDuplicator(),
+  Macro: new Macro(),
+  CowAssimilator: new CowAssimilator()
 };
 export const BuildingsAsString = Buildings;
 const defaultGameState = {
@@ -21,16 +29,12 @@ export class Game {
   }
   decodeState(state) {
     const save = JSON.parse(fromBinary(state));
-    console.log(save);
     Object.keys(save.state).forEach((key) => {
       this.state[key] = save.state[key];
     });
     Object.keys(BuildingsAsString).forEach((key) => {
       if (save.buildings[key])
-        Object.keys(save.buildings[key]).forEach((key2) => {
-          console.log(BuildingsAsString[key]);
-          BuildingsAsString[key][key2] = save.buildings[key][key2];
-        });
+        BuildingsAsString[key].count = save.buildings[key].count;
     });
   }
   click() {
@@ -50,7 +54,7 @@ function toBinary(string) {
   return btoa(String.fromCharCode(...new Uint8Array(codeUnits.buffer)));
 }
 function fromBinary(encoded) {
-  binary = atob(encoded);
+  let binary = atob(encoded);
   const bytes = new Uint8Array(binary.length);
   for (let i = 0; i < bytes.length; i++) {
     bytes[i] = binary.charCodeAt(i);
