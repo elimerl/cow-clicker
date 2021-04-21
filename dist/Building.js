@@ -61,7 +61,7 @@ export class CowFactory extends Building {
   constructor() {
     super(...arguments);
     this.cost = 1e6;
-    this.cps = 1e5;
+    this.cps = 1e6;
     this.tooltip = "A factory that builds cows. GMO-free!";
   }
 }
