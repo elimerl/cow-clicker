@@ -115,7 +115,7 @@
             )} cows
           </button>
           {#if showTooltip[key]}
-            <div class="tooltip">Moocow</div>
+            <div class="tooltip">{BuildingsAsString[key].tooltip}</div>
           {/if}
         </li>
       {/each}

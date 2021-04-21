@@ -30,7 +30,7 @@ export class CowPrinter extends Building {
   tooltip = "A 3D printer to print out cows. Look, it works, don't touch it.";
 }
 export class CowDuplicator extends Building {
-  cost = 500;
-  cps = 20;
-  tooltip = "A 3D printer to print out cows. Look, it works, don't touch it.";
+  cost = 1200;
+  cps = 100;
+  tooltip = "Turns one cow into four! It's Magic™.";
 }
