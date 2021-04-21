@@ -9,6 +9,7 @@ import {
   CowHax,
   CowInator,
   CowMaker2,
+  DarkMatterToCow,
 } from "./Building";
 
 export const Buildings = {
@@ -21,6 +22,7 @@ export const Buildings = {
   CowHax: new CowHax(),
   CowInator: new CowInator(),
   CowMaker2: new CowMaker2(),
+  DarkMatterToCow: new DarkMatterToCow(),
 };
 declare global {
   interface Window {

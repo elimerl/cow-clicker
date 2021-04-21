@@ -62,8 +62,19 @@ export class CowInator extends Building {
   tooltip =
     "*Phineas and Ferb theme plays* Behold, the cow-inator! It makes MANY cows!";
 }
+export class CowCursor extends Building {
+  cost = 1000000000;
+  cps = 100000000;
+  tooltip =
+    "A mouse cursor you hired to get MOAR COWS. The cow factory must grow...";
+}
 export class CowMaker2 extends Building {
   cost = 100000000000;
   cps = 1000000000;
   tooltip = "The sequel to the CowMaker! Makes many cows.";
+}
+export class DarkMatterToCow extends Building {
+  cost = 1000000000000;
+  cps = 10000000000;
+  tooltip = "Turns dark matter into cows.";
 }

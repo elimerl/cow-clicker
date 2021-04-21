@@ -7,6 +7,7 @@
   import "toastify-js/src/toastify.css";
   import tippy from "tippy.js";
   import "tippy.js/dist/tippy.css"; // optional for styling
+  import { fly, fade } from "svelte/transition";
 
   const game = new Game((text) => {
     Toastify({
@@ -26,7 +27,16 @@
       localStorage.setItem("save", game.encodeState());
     });
   }
-
+  //@ts-expect-error
+  window.wipeSave = () => {
+    localStorage.removeItem("save");
+    game.state.cows = 0;
+    Object.keys(Buildings).forEach((v) => {
+      //@ts-expect-error
+      Buildings[v] = new BuildingsAsString[v].constructor();
+    });
+    window.location.reload();
+  };
   let showTooltip: Record<string, boolean> = {};
   let buttons: Record<string, HTMLButtonElement> = {};
 
@@ -59,20 +69,20 @@
     });
     time = timestamp;
     updateState();
-    requestAnimationFrame(tick);
+    if (!document.hidden) requestAnimationFrame(tick);
   }
-  let longTimeNoSee: number;
-  document.onvisibilitychange = (ev) => {
-    if (document.hidden) {
-      longTimeNoSee = Date.now();
-      localStorage.setItem("save", game.encodeState());
-    } else {
-      Object.values(Buildings).forEach((bldg) => {
-        bldg.tick(game, (Date.now() - longTimeNoSee) / 1000);
-      });
-      localStorage.setItem("save", game.encodeState());
-    }
-  };
+  // let longTimeNoSee: number;
+  // document.onvisibilitychange = (ev) => {
+  //   if (document.hidden) {
+  //     longTimeNoSee = Date.now();
+  //     localStorage.setItem("save", game.encodeState());
+  //   } else {
+  //     Object.values(Buildings).forEach((bldg) => {
+  //       bldg.tick(game, (Date.now() - longTimeNoSee) / 1000);
+  //     });
+  //     localStorage.setItem("save", game.encodeState());
+  //   }
+  // };
   requestAnimationFrame(tick);
   document.addEventListener(
     "keydown",
@@ -113,26 +123,27 @@
       Stuff to buy
       {#each Object.keys(Buildings) as key}
         <li>
-          <button
-            style={game.state.cows <= BuildingsAsString[key].cost
-              ? "background-color:#666;"
-              : "cursor:pointer"}
-            on:mouseenter={() => {
-              showTooltip[key] = true;
-            }}
-            on:mouseleave={() => {
-              showTooltip[key] = false;
-            }}
-            on:click={() => {
-              BuildingsAsString[key].buy(game);
-              updateState();
-            }}
-            bind:this={buttons[key]}
-          >
-            {key} ({BuildingsAsString[key].count}) - {nFormatter(
-              BuildingsAsString[key].cost
-            )} cows
-          </button>
+          {#if game.state.cows >= BuildingsAsString[key].cost}
+            <button
+              on:mouseenter={() => {
+                showTooltip[key] = true;
+              }}
+              on:mouseleave={() => {
+                showTooltip[key] = false;
+              }}
+              on:click={() => {
+                BuildingsAsString[key].buy(game);
+                updateState();
+              }}
+              bind:this={buttons[key]}
+              in:fly={{ y: 200, duration: 1000 }}
+              out:fade
+            >
+              {key} ({BuildingsAsString[key].count}) - {nFormatter(
+                BuildingsAsString[key].cost
+              )} cows
+            </button>
+          {/if}
         </li>
       {/each}
     </ul>
@@ -183,6 +194,7 @@
     padding: 0.5rem;
     margin-top: 0.5rem;
     transition: background-color 0.2s;
+    cursor: pointer;
   }
   @keyframes scale-easeOutElastic {
     0% {
@@ -197,7 +209,7 @@
     }
   }
   :global(.tippy-box[data-theme~="black"]) {
-    background-color: black;
+    background-color: #222;
     color: white;
   }
   li {
