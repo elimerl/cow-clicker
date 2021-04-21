@@ -5,7 +5,12 @@
     "test": "web-test-runner \"src/**/*.test.ts\""
   },
   "dependencies": {
-    "svelte": "^3.24.0"
+    "@popperjs/core": "^2.9.2",
+    "@types/toastify-js": "^1.9.1",
+    "events": "^3.3.0",
+    "svelte": "^3.24.0",
+    "svelte-popperjs": "^1.2.3",
+    "toastify-js": "^1.10.0"
   },
   "devDependencies": {
     "@snowpack/plugin-dotenv": "^2.0.5",
