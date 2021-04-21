@@ -5,7 +5,8 @@ import {
   Macro,
   CowAssimilator,
   CowFactory,
-  CowHax
+  CowHax,
+  CowInator
 } from "./Building.js";
 export const Buildings = {
   CowMaker: new CowMaker(),
@@ -14,8 +15,10 @@ export const Buildings = {
   Macro: new Macro(),
   CowAssimilator: new CowAssimilator(),
   CowFactory: new CowFactory(),
-  CowHax: new CowHax()
+  CowHax: new CowHax(),
+  CowInator: new CowInator()
 };
+window.Buildings = Buildings;
 export const BuildingsAsString = Buildings;
 const defaultGameState = {
   cows: 0

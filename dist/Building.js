@@ -73,3 +73,11 @@ export class CowHax extends Building {
     this.tooltip = "Hacks the game to quadruple the factories.";
   }
 }
+export class CowInator extends Building {
+  constructor() {
+    super(...arguments);
+    this.cost = 1e8;
+    this.cps = 1e7;
+    this.tooltip = "*Phineas and Ferb theme plays* Behold, the cow-inator! It makes MANY cows!";
+  }
+}
