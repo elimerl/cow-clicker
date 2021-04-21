@@ -37,15 +37,21 @@ function get_each_context(ctx, list, i) {
 // (108:10) {#if showTooltip[key]}
 function create_if_block(ctx) {
 	let div;
+	let t_value = BuildingsAsString[/*key*/ ctx[12]].tooltip + "";
+	let t;
 
 	return {
 		c() {
 			div = element("div");
-			div.textContent = "Moocow";
+			t = text(t_value);
 			attr(div, "class", "tooltip svelte-szu782");
 		},
 		m(target, anchor) {
 			insert(target, div, anchor);
+			append(div, t);
+		},
+		p(ctx, dirty) {
+			if (dirty & /*Buildings*/ 1 && t_value !== (t_value = BuildingsAsString[/*key*/ ctx[12]].tooltip + "")) set_data(t, t_value);
 		},
 		d(detaching) {
 			if (detaching) detach(div);
@@ -130,7 +136,7 @@ function create_each_block(ctx) {
 
 			if (/*showTooltip*/ ctx[2][/*key*/ ctx[12]]) {
 				if (if_block) {
-					
+					if_block.p(ctx, dirty);
 				} else {
 					if_block = create_if_block(ctx);
 					if_block.c();
@@ -240,7 +246,7 @@ function create_fragment(ctx) {
 			if (dirty & /*game*/ 2 && t2_value !== (t2_value = (/*game*/ ctx[1].state.cows === 1 ? "" : "s") + "")) set_data(t2, t2_value);
 			if (dirty & /*game*/ 2 && t4_value !== (t4_value = nFormatter(/*game*/ ctx[1].getCps()) + "")) set_data(t4, t4_value);
 
-			if (dirty & /*showTooltip, Object, Buildings, BuildingsAsString, game, updateState, nFormatter*/ 15) {
+			if (dirty & /*BuildingsAsString, Object, Buildings, showTooltip, game, updateState, nFormatter*/ 15) {
 				each_value = Object.keys(/*Buildings*/ ctx[0]);
 				let i;
 

@@ -36,8 +36,8 @@ export class CowPrinter extends Building {
 export class CowDuplicator extends Building {
   constructor() {
     super(...arguments);
-    this.cost = 500;
-    this.cps = 20;
-    this.tooltip = "A 3D printer to print out cows. Look, it works, don't touch it.";
+    this.cost = 1200;
+    this.cps = 100;
+    this.tooltip = "Turns one cow into four! It's Magic™.";
   }
 }
