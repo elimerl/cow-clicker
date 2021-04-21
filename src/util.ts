@@ -13,6 +13,17 @@ export function nFormatter(num: number) {
     { value: 1e30, symbol: " nonillion" },
     { value: 1e33, symbol: " decillion" },
     { value: 1e33, symbol: " decillion" },
+    { value: 1e36, symbol: " undecillion" },
+    { value: 1e39, symbol: " duodecillion" },
+    { value: 1e42, symbol: " tredecillion" },
+    { value: 1e45, symbol: " quattuordecillion" },
+    { value: 1e48, symbol: " quindecillion" },
+    { value: 1e51, symbol: " sexdecillion" },
+    { value: 1e54, symbol: " septendecillion" },
+    { value: 1e57, symbol: " octodecillion" },
+    { value: 1e60, symbol: " novemdecillion" },
+    { value: 1e63, symbol: " vigintillion" },
+    { value: 1e303, symbol: " centillion" },
   ];
   var rx = /\.0+$|(\.[0-9]*[1-9])0+$/;
   var i;
