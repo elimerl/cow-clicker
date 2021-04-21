@@ -16,6 +16,7 @@ import {
 	destroy_each,
 	detach,
 	element,
+	empty,
 	group_outros,
 	init,
 	insert,
@@ -38,6 +39,7 @@ import "../_snowpack/pkg/toastify-js/src/toastify.css.proxy.js";
 import tippy from "../_snowpack/pkg/tippyjs.js";
 import "../_snowpack/pkg/tippyjs/dist/tippy.css.proxy.js";
 import { fly, fade } from "../_snowpack/pkg/svelte/transition.js";
+import { onUnlockListen } from "./Building.js";
 
 function get_each_context(ctx, list, i) {
 	const child_ctx = ctx.slice();
@@ -47,13 +49,14 @@ function get_each_context(ctx, list, i) {
 	return child_ctx;
 }
 
-// (110:10) {#if BuildingsAsString[key].unlocked}
+// (122:8) {#if BuildingsAsString[key].unlocked}
 function create_if_block_1(ctx) {
+	let li;
 	let button;
 	let t0_value = /*key*/ ctx[16] + "";
 	let t0;
 	let t1;
-	let t2_value = BuildingsAsString[/*key*/ ctx[16]].count + "";
+	let t2_value = BuildingsAsString[/*key*/ ctx[16]].count.toLocaleString("fullwide", { useGrouping: false }) + "";
 	let t2;
 	let t3;
 	let t4_value = nFormatter(BuildingsAsString[/*key*/ ctx[16]].cost) + "";
@@ -84,6 +87,7 @@ function create_if_block_1(ctx) {
 
 	return {
 		c() {
+			li = element("li");
 			button = element("button");
 			t0 = text(t0_value);
 			t1 = text(" (");
@@ -97,9 +101,11 @@ function create_if_block_1(ctx) {
 			: "");
 
 			attr(button, "class", "svelte-1fuoc8c");
+			attr(li, "class", "svelte-1fuoc8c");
 		},
 		m(target, anchor) {
-			insert(target, button, anchor);
+			insert(target, li, anchor);
+			append(li, button);
 			append(button, t0);
 			append(button, t1);
 			append(button, t2);
@@ -122,7 +128,7 @@ function create_if_block_1(ctx) {
 		p(new_ctx, dirty) {
 			ctx = new_ctx;
 			if ((!current || dirty & /*Buildings*/ 1) && t0_value !== (t0_value = /*key*/ ctx[16] + "")) set_data(t0, t0_value);
-			if ((!current || dirty & /*Buildings*/ 1) && t2_value !== (t2_value = BuildingsAsString[/*key*/ ctx[16]].count + "")) set_data(t2, t2_value);
+			if ((!current || dirty & /*Buildings*/ 1) && t2_value !== (t2_value = BuildingsAsString[/*key*/ ctx[16]].count.toLocaleString("fullwide", { useGrouping: false }) + "")) set_data(t2, t2_value);
 			if ((!current || dirty & /*Buildings*/ 1) && t4_value !== (t4_value = nFormatter(BuildingsAsString[/*key*/ ctx[16]].cost) + "")) set_data(t4, t4_value);
 
 			if (!current || dirty & /*game, Buildings*/ 3 && button_style_value !== (button_style_value = /*game*/ ctx[1].state.cows <= BuildingsAsString[/*key*/ ctx[16]].cost
@@ -154,7 +160,7 @@ function create_if_block_1(ctx) {
 			current = false;
 		},
 		d(detaching) {
-			if (detaching) detach(button);
+			if (detaching) detach(li);
 			unassign_button();
 			if (detaching && button_outro) button_outro.end();
 			mounted = false;
@@ -163,21 +169,20 @@ function create_if_block_1(ctx) {
 	};
 }
 
-// (108:6) {#each Object.keys(Buildings) as key}
+// (121:6) {#each Object.keys(Buildings) as key}
 function create_each_block(ctx) {
-	let li;
+	let if_block_anchor;
 	let current;
 	let if_block = BuildingsAsString[/*key*/ ctx[16]].unlocked && create_if_block_1(ctx);
 
 	return {
 		c() {
-			li = element("li");
 			if (if_block) if_block.c();
-			attr(li, "class", "svelte-1fuoc8c");
+			if_block_anchor = empty();
 		},
 		m(target, anchor) {
-			insert(target, li, anchor);
-			if (if_block) if_block.m(li, null);
+			if (if_block) if_block.m(target, anchor);
+			insert(target, if_block_anchor, anchor);
 			current = true;
 		},
 		p(ctx, dirty) {
@@ -192,7 +197,7 @@ function create_each_block(ctx) {
 					if_block = create_if_block_1(ctx);
 					if_block.c();
 					transition_in(if_block, 1);
-					if_block.m(li, null);
+					if_block.m(if_block_anchor.parentNode, if_block_anchor);
 				}
 			} else if (if_block) {
 				group_outros();
@@ -214,13 +219,13 @@ function create_each_block(ctx) {
 			current = false;
 		},
 		d(detaching) {
-			if (detaching) detach(li);
-			if (if_block) if_block.d();
+			if (if_block) if_block.d(detaching);
+			if (detaching) detach(if_block_anchor);
 		}
 	};
 }
 
-// (136:6) {#if game.state.cows >= 100000000000000}
+// (147:6) {#if game.state.cows >= 100000000000000}
 function create_if_block(ctx) {
 	let li;
 	let button;
@@ -488,6 +493,23 @@ function instance($$self, $$props, $$invalidate) {
 
 	let showTooltip = {};
 	let buttons = {};
+
+	onUnlockListen(bldg => {
+		const key = bldg.constructor.name;
+
+		setTimeout(
+			() => {
+				tippy(buttons[key], {
+					content: bldg.tooltip + " " + nFormatter(bldg.cps) + " cows per second",
+					placement: "right",
+					arrow: false,
+					theme: "black",
+					maxWidth: "400em"
+				});
+			},
+			16
+		);
+	});
 
 	onMount(() => {
 		Object.keys(buttons).forEach(key => {

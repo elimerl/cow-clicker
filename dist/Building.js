@@ -1,3 +1,4 @@
+const onUnlock = [];
 export class Building {
   constructor() {
     this.cost = 0;
@@ -16,8 +17,9 @@ export class Building {
   }
   tick(game, seconds) {
     game.state.cows += this.cps * seconds * this.count;
-    if (game.state.cows >= this.cost) {
+    if (game.state.cows >= this.cost && !this.unlocked) {
       this.unlocked = true;
+      onUnlock.forEach((v) => v(this));
     }
   }
 }
@@ -109,3 +111,6 @@ export class DarkMatterToCow extends Building {
     this.tooltip = "Turns dark matter into cows.";
   }
 }
+export const onUnlockListen = (cb) => {
+  onUnlock.push(cb);
+};
