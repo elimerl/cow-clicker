@@ -9,6 +9,10 @@ export function nFormatter(num: number) {
     { value: 1e18, symbol: " quintillion" },
     { value: 1e21, symbol: " sextillion" },
     { value: 1e24, symbol: " septillion" },
+    { value: 1e27, symbol: " octillion" },
+    { value: 1e30, symbol: " nonillion" },
+    { value: 1e33, symbol: " decillion" },
+    { value: 1e33, symbol: " decillion" },
   ];
   var rx = /\.0+$|(\.[0-9]*[1-9])0+$/;
   var i;
@@ -18,6 +22,8 @@ export function nFormatter(num: number) {
     }
   }
   return (
-    (Math.floor(num) / si[i].value).toFixed(1).replace(rx, "$1") + si[i].symbol
+    (num / si[i].value)
+      .toLocaleString("fullwide", { useGrouping: false })
+      .replace(rx, "$1") + si[i].symbol
   );
 }
