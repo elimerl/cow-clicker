@@ -4,6 +4,7 @@ export abstract class Building {
   cost = 0;
   cps = 0;
   count = 0;
+  unlocked = false;
   abstract tooltip: string;
   constructor() {}
   buy(game: Game) {
@@ -12,11 +13,14 @@ export abstract class Building {
       this.cost *= 1.2;
       this.count++;
     } else {
-      game.notify("You can't afford this!");
+      game.notify(`You can't afford a ${this.constructor.name}!`);
     }
   }
   tick(game: Game, seconds: number) {
     game.state.cows += this.cps * seconds * this.count;
+    if (game.state.cows >= this.cost) {
+      this.unlocked = true;
+    }
   }
 }
 export class CowMaker extends Building {

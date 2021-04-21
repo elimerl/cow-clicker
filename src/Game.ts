@@ -36,6 +36,14 @@ const defaultGameState: GameState = {
   cows: 0,
 };
 export class Game {
+  wipeSave() {
+    localStorage.removeItem("save");
+    this.state.cows = 0;
+    Object.keys(Buildings).forEach((v) => {
+      //@ts-expect-error
+      Buildings[v] = new BuildingsAsString[v].constructor();
+    });
+  }
   state: GameState;
   constructor(readonly notify: (message: string) => void) {
     this.state = JSON.parse(JSON.stringify(defaultGameState));
@@ -56,6 +64,7 @@ export class Game {
       if (save.buildings[key]) {
         BuildingsAsString[key].count = save.buildings[key].count;
         BuildingsAsString[key].cost = save.buildings[key].cost;
+        BuildingsAsString[key].unlocked = save.buildings[key].unlocked;
       }
     });
   }

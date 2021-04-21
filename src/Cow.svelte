@@ -11,11 +11,13 @@
 
   const game = new Game((text) => {
     Toastify({
-      duration: 3000,
+      duration: 1000,
       text,
-      gravity: "bottom", // `top` or `bottom`
-      position: "center", // `left`, `center` or `right`
+      gravity: "top", // `top` or `bottom`
+      position: "right", // `left`, `center` or `right`
       close: true,
+      //@ts-expect-error
+      style: { background: "#222" },
     }).showToast();
   });
   if (localStorage.getItem("save"))
@@ -27,27 +29,20 @@
       localStorage.setItem("save", game.encodeState());
     });
   }
-  //@ts-expect-error
-  window.wipeSave = () => {
-    localStorage.removeItem("save");
-    game.state.cows = 0;
-    Object.keys(Buildings).forEach((v) => {
-      //@ts-expect-error
-      Buildings[v] = new BuildingsAsString[v].constructor();
-    });
-    window.location.reload();
-  };
   let showTooltip: Record<string, boolean> = {};
   let buttons: Record<string, HTMLButtonElement> = {};
 
   onMount(() => {
     Object.keys(buttons).forEach((key) => {
+      let content =
+        key === "ascend"
+          ? "Ascend."
+          : BuildingsAsString[key].tooltip +
+            " " +
+            nFormatter(BuildingsAsString[key].cps) +
+            " cows per second";
       tippy(buttons[key], {
-        content:
-          BuildingsAsString[key].tooltip +
-          " " +
-          nFormatter(BuildingsAsString[key].cps) +
-          " cows per second",
+        content,
         placement: "right",
         arrow: false,
         theme: "black",
@@ -123,7 +118,7 @@
       Stuff to buy
       {#each Object.keys(Buildings) as key}
         <li>
-          {#if game.state.cows >= BuildingsAsString[key].cost}
+          {#if BuildingsAsString[key].unlocked}
             <button
               on:mouseenter={() => {
                 showTooltip[key] = true;
@@ -135,6 +130,9 @@
                 BuildingsAsString[key].buy(game);
                 updateState();
               }}
+              style={game.state.cows <= BuildingsAsString[key].cost
+                ? "background:#666"
+                : ""}
               bind:this={buttons[key]}
               in:fly={{ y: 200, duration: 1000 }}
               out:fade
@@ -146,6 +144,26 @@
           {/if}
         </li>
       {/each}
+      {#if game.state.cows >= 100000000000000}
+        <li>
+          <button
+            on:mouseenter={() => {
+              showTooltip["ascend"] = true;
+            }}
+            on:mouseleave={() => {
+              showTooltip["ascend"] = false;
+            }}
+            on:click={() => {
+              game.wipeSave();
+              updateState();
+            }}
+            bind:this={buttons["ascend"]}
+            transition:fly={{ y: 200, duration: 1000 }}
+          >
+            Ascend
+          </button>
+        </li>
+      {/if}
     </ul>
   </div>
 </div>
@@ -193,9 +211,10 @@
     border-radius: 4px;
     padding: 0.5rem;
     margin-top: 0.5rem;
-    transition: background-color 0.2s;
+    transition: background-color 1s;
     cursor: pointer;
   }
+
   @keyframes scale-easeOutElastic {
     0% {
       transform: scale(1);
