@@ -8,6 +8,7 @@ import {
   CowFactory,
   CowHax,
   CowInator,
+  CowMaker2,
 } from "./Building";
 
 export const Buildings = {
@@ -19,6 +20,7 @@ export const Buildings = {
   CowFactory: new CowFactory(),
   CowHax: new CowHax(),
   CowInator: new CowInator(),
+  CowMaker2: new CowMaker2(),
 };
 declare global {
   interface Window {

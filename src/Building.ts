@@ -62,3 +62,8 @@ export class CowInator extends Building {
   tooltip =
     "*Phineas and Ferb theme plays* Behold, the cow-inator! It makes MANY cows!";
 }
+export class CowMaker2 extends Building {
+  cost = 100000000000;
+  cps = 1000000000;
+  tooltip = "The sequel to the CowMaker! Makes many cows.";
+}
