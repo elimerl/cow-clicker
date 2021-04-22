@@ -387,100 +387,6 @@ function create_out_transition(node, fn, params) {
     }
   };
 }
-function create_bidirectional_transition(node, fn, params, intro) {
-  let config = fn(node, params);
-  let t = intro ? 0 : 1;
-  let running_program = null;
-  let pending_program = null;
-  let animation_name = null;
-  function clear_animation() {
-    if (animation_name)
-      delete_rule(node, animation_name);
-  }
-  function init2(program, duration) {
-    const d = program.b - t;
-    duration *= Math.abs(d);
-    return {
-      a: t,
-      b: program.b,
-      d,
-      duration,
-      start: program.start,
-      end: program.start + duration,
-      group: program.group
-    };
-  }
-  function go(b) {
-    const {delay = 0, duration = 300, easing = identity, tick: tick2 = noop, css} = config || null_transition;
-    const program = {
-      start: now() + delay,
-      b
-    };
-    if (!b) {
-      program.group = outros;
-      outros.r += 1;
-    }
-    if (running_program || pending_program) {
-      pending_program = program;
-    } else {
-      if (css) {
-        clear_animation();
-        animation_name = create_rule(node, t, b, duration, delay, easing, css);
-      }
-      if (b)
-        tick2(0, 1);
-      running_program = init2(program, duration);
-      add_render_callback(() => dispatch(node, b, "start"));
-      loop((now2) => {
-        if (pending_program && now2 > pending_program.start) {
-          running_program = init2(pending_program, duration);
-          pending_program = null;
-          dispatch(node, running_program.b, "start");
-          if (css) {
-            clear_animation();
-            animation_name = create_rule(node, t, running_program.b, running_program.duration, 0, easing, config.css);
-          }
-        }
-        if (running_program) {
-          if (now2 >= running_program.end) {
-            tick2(t = running_program.b, 1 - t);
-            dispatch(node, running_program.b, "end");
-            if (!pending_program) {
-              if (running_program.b) {
-                clear_animation();
-              } else {
-                if (!--running_program.group.r)
-                  run_all(running_program.group.c);
-              }
-            }
-            running_program = null;
-          } else if (now2 >= running_program.start) {
-            const p = now2 - running_program.start;
-            t = running_program.a + running_program.d * easing(p / running_program.duration);
-            tick2(t, 1 - t);
-          }
-        }
-        return !!(running_program || pending_program);
-      });
-    }
-  }
-  return {
-    run(b) {
-      if (is_function(config)) {
-        wait().then(() => {
-          config = config();
-          go(b);
-        });
-      } else {
-        go(b);
-      }
-    },
-    end() {
-      clear_animation();
-      running_program = pending_program = null;
-    }
-  };
-}
 function mount_component(component, target, anchor, customElement) {
   const {fragment, on_mount, on_destroy: on_destroy2, after_update} = component.$$;
   fragment && fragment.m(target, anchor);
@@ -587,4 +493,4 @@ class SvelteComponent {
   }
 }
 
-export { SvelteComponent as S, add_render_callback as a, append as b, attr as c, binding_callbacks as d, check_outros as e, create_bidirectional_transition as f, create_in_transition as g, create_out_transition as h, destroy_each as i, detach as j, element as k, empty as l, group_outros as m, init as n, onMount as o, insert as p, listen as q, noop as r, run_all as s, safe_not_equal as t, set_data as u, space as v, text as w, transition_in as x, transition_out as y, identity as z };
+export { SvelteComponent as S, add_render_callback as a, append as b, attr as c, binding_callbacks as d, check_outros as e, create_in_transition as f, create_out_transition as g, destroy_each as h, detach as i, element as j, empty as k, group_outros as l, init as m, insert as n, onMount as o, listen as p, set_data as q, run_all as r, safe_not_equal as s, space as t, text as u, transition_in as v, transition_out as w, identity as x };

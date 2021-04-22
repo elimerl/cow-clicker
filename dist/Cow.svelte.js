@@ -10,7 +10,6 @@ import {
 	attr,
 	binding_callbacks,
 	check_outros,
-	create_bidirectional_transition,
 	create_in_transition,
 	create_out_transition,
 	destroy_each,
@@ -21,7 +20,6 @@ import {
 	init,
 	insert,
 	listen,
-	noop,
 	run_all,
 	safe_not_equal,
 	set_data,
@@ -43,43 +41,44 @@ import { onUnlockListen } from "./Building.js";
 
 function get_each_context(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[16] = list[i];
-	child_ctx[17] = list;
-	child_ctx[18] = i;
+	child_ctx[12] = list[i];
+	child_ctx[13] = list;
+	child_ctx[14] = i;
 	return child_ctx;
 }
 
-// (122:8) {#if BuildingsAsString[key].unlocked}
-function create_if_block_1(ctx) {
+// (125:8) {#if BuildingsAsString[key].unlocked}
+function create_if_block(ctx) {
 	let li;
 	let button;
-	let t0_value = /*key*/ ctx[16] + "";
+	let t0_value = /*key*/ ctx[12] + "";
 	let t0;
 	let t1;
-	let t2_value = BuildingsAsString[/*key*/ ctx[16]].count.toLocaleString("fullwide", { useGrouping: false }) + "";
+	let t2_value = BuildingsAsString[/*key*/ ctx[12]].count.toLocaleString("fullwide", { useGrouping: false }) + "";
 	let t2;
 	let t3;
-	let t4_value = nFormatter(BuildingsAsString[/*key*/ ctx[16]].cost) + "";
+	let t4_value = nFormatter(BuildingsAsString[/*key*/ ctx[12]].cost) + "";
 	let t4;
 	let t5;
 	let button_style_value;
-	let key = /*key*/ ctx[16];
+	let key = /*key*/ ctx[12];
 	let button_intro;
 	let button_outro;
+	let t6;
 	let current;
 	let mounted;
 	let dispose;
 
 	function mouseenter_handler() {
-		return /*mouseenter_handler*/ ctx[6](/*key*/ ctx[16]);
+		return /*mouseenter_handler*/ ctx[6](/*key*/ ctx[12]);
 	}
 
 	function mouseleave_handler() {
-		return /*mouseleave_handler*/ ctx[7](/*key*/ ctx[16]);
+		return /*mouseleave_handler*/ ctx[7](/*key*/ ctx[12]);
 	}
 
 	function click_handler_1() {
-		return /*click_handler_1*/ ctx[8](/*key*/ ctx[16]);
+		return /*click_handler_1*/ ctx[8](/*key*/ ctx[12]);
 	}
 
 	const assign_button = () => /*button_binding*/ ctx[9](button, key);
@@ -95,13 +94,14 @@ function create_if_block_1(ctx) {
 			t3 = text(") - ");
 			t4 = text(t4_value);
 			t5 = text(" cows");
+			t6 = space();
 
-			attr(button, "style", button_style_value = /*game*/ ctx[1].state.cows <= BuildingsAsString[/*key*/ ctx[16]].cost
+			attr(button, "style", button_style_value = /*game*/ ctx[1].state.cows <= BuildingsAsString[/*key*/ ctx[12]].cost
 			? "background:#666"
 			: "");
 
-			attr(button, "class", "svelte-1fuoc8c");
-			attr(li, "class", "svelte-1fuoc8c");
+			attr(button, "class", "svelte-12114nx");
+			attr(li, "class", "svelte-12114nx");
 		},
 		m(target, anchor) {
 			insert(target, li, anchor);
@@ -113,6 +113,7 @@ function create_if_block_1(ctx) {
 			append(button, t4);
 			append(button, t5);
 			assign_button();
+			append(li, t6);
 			current = true;
 
 			if (!mounted) {
@@ -127,19 +128,19 @@ function create_if_block_1(ctx) {
 		},
 		p(new_ctx, dirty) {
 			ctx = new_ctx;
-			if ((!current || dirty & /*Buildings*/ 1) && t0_value !== (t0_value = /*key*/ ctx[16] + "")) set_data(t0, t0_value);
-			if ((!current || dirty & /*Buildings*/ 1) && t2_value !== (t2_value = BuildingsAsString[/*key*/ ctx[16]].count.toLocaleString("fullwide", { useGrouping: false }) + "")) set_data(t2, t2_value);
-			if ((!current || dirty & /*Buildings*/ 1) && t4_value !== (t4_value = nFormatter(BuildingsAsString[/*key*/ ctx[16]].cost) + "")) set_data(t4, t4_value);
+			if ((!current || dirty & /*Buildings*/ 1) && t0_value !== (t0_value = /*key*/ ctx[12] + "")) set_data(t0, t0_value);
+			if ((!current || dirty & /*Buildings*/ 1) && t2_value !== (t2_value = BuildingsAsString[/*key*/ ctx[12]].count.toLocaleString("fullwide", { useGrouping: false }) + "")) set_data(t2, t2_value);
+			if ((!current || dirty & /*Buildings*/ 1) && t4_value !== (t4_value = nFormatter(BuildingsAsString[/*key*/ ctx[12]].cost) + "")) set_data(t4, t4_value);
 
-			if (!current || dirty & /*game, Buildings*/ 3 && button_style_value !== (button_style_value = /*game*/ ctx[1].state.cows <= BuildingsAsString[/*key*/ ctx[16]].cost
+			if (!current || dirty & /*game, Buildings*/ 3 && button_style_value !== (button_style_value = /*game*/ ctx[1].state.cows <= BuildingsAsString[/*key*/ ctx[12]].cost
 			? "background:#666"
 			: "")) {
 				attr(button, "style", button_style_value);
 			}
 
-			if (key !== /*key*/ ctx[16]) {
+			if (key !== /*key*/ ctx[12]) {
 				unassign_button();
-				key = /*key*/ ctx[16];
+				key = /*key*/ ctx[12];
 				assign_button();
 			}
 		},
@@ -169,11 +170,11 @@ function create_if_block_1(ctx) {
 	};
 }
 
-// (121:6) {#each Object.keys(Buildings) as key}
+// (124:6) {#each Object.keys(Buildings) as key}
 function create_each_block(ctx) {
 	let if_block_anchor;
 	let current;
-	let if_block = BuildingsAsString[/*key*/ ctx[16]].unlocked && create_if_block_1(ctx);
+	let if_block = BuildingsAsString[/*key*/ ctx[12]].unlocked && create_if_block(ctx);
 
 	return {
 		c() {
@@ -186,7 +187,7 @@ function create_each_block(ctx) {
 			current = true;
 		},
 		p(ctx, dirty) {
-			if (BuildingsAsString[/*key*/ ctx[16]].unlocked) {
+			if (BuildingsAsString[/*key*/ ctx[12]].unlocked) {
 				if (if_block) {
 					if_block.p(ctx, dirty);
 
@@ -194,7 +195,7 @@ function create_each_block(ctx) {
 						transition_in(if_block, 1);
 					}
 				} else {
-					if_block = create_if_block_1(ctx);
+					if_block = create_if_block(ctx);
 					if_block.c();
 					transition_in(if_block, 1);
 					if_block.m(if_block_anchor.parentNode, if_block_anchor);
@@ -225,68 +226,10 @@ function create_each_block(ctx) {
 	};
 }
 
-// (147:6) {#if game.state.cows >= 100000000000000}
-function create_if_block(ctx) {
-	let li;
-	let button;
-	let button_transition;
-	let current;
-	let mounted;
-	let dispose;
-
-	return {
-		c() {
-			li = element("li");
-			button = element("button");
-			button.textContent = "Ascend";
-			attr(button, "class", "svelte-1fuoc8c");
-			attr(li, "class", "svelte-1fuoc8c");
-		},
-		m(target, anchor) {
-			insert(target, li, anchor);
-			append(li, button);
-			/*button_binding_1*/ ctx[13](button);
-			current = true;
-
-			if (!mounted) {
-				dispose = [
-					listen(button, "mouseenter", /*mouseenter_handler_1*/ ctx[10]),
-					listen(button, "mouseleave", /*mouseleave_handler_1*/ ctx[11]),
-					listen(button, "click", /*click_handler_2*/ ctx[12])
-				];
-
-				mounted = true;
-			}
-		},
-		p: noop,
-		i(local) {
-			if (current) return;
-
-			add_render_callback(() => {
-				if (!button_transition) button_transition = create_bidirectional_transition(button, fly, { y: 200, duration: 1000 }, true);
-				button_transition.run(1);
-			});
-
-			current = true;
-		},
-		o(local) {
-			if (!button_transition) button_transition = create_bidirectional_transition(button, fly, { y: 200, duration: 1000 }, false);
-			button_transition.run(0);
-			current = false;
-		},
-		d(detaching) {
-			if (detaching) detach(li);
-			/*button_binding_1*/ ctx[13](null);
-			if (detaching && button_transition) button_transition.end();
-			mounted = false;
-			run_all(dispose);
-		}
-	};
-}
-
 function create_fragment(ctx) {
-	let div4;
-	let div2;
+	let div5;
+	let div3;
+	let div0;
 	let p0;
 	let t0_value = nFormatter(/*game*/ ctx[1].state.cows) + "";
 	let t0;
@@ -299,12 +242,11 @@ function create_fragment(ctx) {
 	let t4;
 	let t5;
 	let t6;
-	let div1;
+	let div2;
 	let t8;
-	let div3;
+	let div4;
 	let ul;
 	let t9;
-	let t10;
 	let current;
 	let mounted;
 	let dispose;
@@ -319,12 +261,11 @@ function create_fragment(ctx) {
 		each_blocks[i] = null;
 	});
 
-	let if_block = /*game*/ ctx[1].state.cows >= 100000000000000 && create_if_block(ctx);
-
 	return {
 		c() {
-			div4 = element("div");
-			div2 = element("div");
+			div5 = element("div");
+			div3 = element("div");
+			div0 = element("div");
 			p0 = element("p");
 			t0 = text(t0_value);
 			t1 = text(" cow");
@@ -334,10 +275,10 @@ function create_fragment(ctx) {
 			t4 = text(t4_value);
 			t5 = text(" cows per second");
 			t6 = space();
-			div1 = element("div");
-			div1.innerHTML = `<div>🐄</div>`;
+			div2 = element("div");
+			div2.innerHTML = `<div>🐄</div>`;
 			t8 = space();
-			div3 = element("div");
+			div4 = element("div");
 			ul = element("ul");
 			t9 = text("Stuff to buy\n      ");
 
@@ -345,42 +286,40 @@ function create_fragment(ctx) {
 				each_blocks[i].c();
 			}
 
-			t10 = space();
-			if (if_block) if_block.c();
-			attr(div1, "class", "big-cow-click svelte-1fuoc8c");
-			attr(div2, "class", "big-cow svelte-1fuoc8c");
-			attr(ul, "class", "svelte-1fuoc8c");
-			attr(div3, "class", "store svelte-1fuoc8c");
-			attr(div4, "class", "App svelte-1fuoc8c");
+			attr(div0, "class", "big-text svelte-12114nx");
+			attr(div2, "class", "big-cow-click svelte-12114nx");
+			attr(div3, "class", "big-cow svelte-12114nx");
+			attr(ul, "class", "svelte-12114nx");
+			attr(div4, "class", "store svelte-12114nx");
+			attr(div5, "class", "App svelte-12114nx");
 		},
 		m(target, anchor) {
-			insert(target, div4, anchor);
-			append(div4, div2);
-			append(div2, p0);
+			insert(target, div5, anchor);
+			append(div5, div3);
+			append(div3, div0);
+			append(div0, p0);
 			append(p0, t0);
 			append(p0, t1);
 			append(p0, t2);
-			append(div2, t3);
-			append(div2, p1);
+			append(div0, t3);
+			append(div0, p1);
 			append(p1, t4);
 			append(p1, t5);
-			append(div2, t6);
-			append(div2, div1);
-			append(div4, t8);
-			append(div4, div3);
-			append(div3, ul);
+			append(div3, t6);
+			append(div3, div2);
+			append(div5, t8);
+			append(div5, div4);
+			append(div4, ul);
 			append(ul, t9);
 
 			for (let i = 0; i < each_blocks.length; i += 1) {
 				each_blocks[i].m(ul, null);
 			}
 
-			append(ul, t10);
-			if (if_block) if_block.m(ul, null);
 			current = true;
 
 			if (!mounted) {
-				dispose = listen(div1, "click", /*click_handler*/ ctx[5]);
+				dispose = listen(div2, "click", /*click_handler*/ ctx[5]);
 				mounted = true;
 			}
 		},
@@ -403,7 +342,7 @@ function create_fragment(ctx) {
 						each_blocks[i] = create_each_block(child_ctx);
 						each_blocks[i].c();
 						transition_in(each_blocks[i], 1);
-						each_blocks[i].m(ul, t10);
+						each_blocks[i].m(ul, null);
 					}
 				}
 
@@ -415,29 +354,6 @@ function create_fragment(ctx) {
 
 				check_outros();
 			}
-
-			if (/*game*/ ctx[1].state.cows >= 100000000000000) {
-				if (if_block) {
-					if_block.p(ctx, dirty);
-
-					if (dirty & /*game*/ 2) {
-						transition_in(if_block, 1);
-					}
-				} else {
-					if_block = create_if_block(ctx);
-					if_block.c();
-					transition_in(if_block, 1);
-					if_block.m(ul, null);
-				}
-			} else if (if_block) {
-				group_outros();
-
-				transition_out(if_block, 1, 1, () => {
-					if_block = null;
-				});
-
-				check_outros();
-			}
 		},
 		i(local) {
 			if (current) return;
@@ -446,7 +362,6 @@ function create_fragment(ctx) {
 				transition_in(each_blocks[i]);
 			}
 
-			transition_in(if_block);
 			current = true;
 		},
 		o(local) {
@@ -456,13 +371,11 @@ function create_fragment(ctx) {
 				transition_out(each_blocks[i]);
 			}
 
-			transition_out(if_block);
 			current = false;
 		},
 		d(detaching) {
-			if (detaching) detach(div4);
+			if (detaching) detach(div5);
 			destroy_each(each_blocks, detaching);
-			if (if_block) if_block.d();
 			mounted = false;
 			dispose();
 		}
@@ -474,7 +387,7 @@ function instance($$self, $$props, $$invalidate) {
 			Toastify({
 				duration: 1000,
 				text,
-				gravity: "top",
+				gravity: "bottom",
 				position: "right",
 				close: true,
 				//@ts-expect-error
@@ -497,32 +410,30 @@ function instance($$self, $$props, $$invalidate) {
 	onUnlockListen(bldg => {
 		const key = bldg.constructor.name;
 
-		setTimeout(
-			() => {
-				tippy(buttons[key], {
-					content: bldg.tooltip + " " + nFormatter(bldg.cps) + " cows per second",
-					placement: "right",
-					arrow: false,
-					theme: "black",
-					maxWidth: "400em"
-				});
-			},
-			16
-		);
+		requestAnimationFrame(() => {
+			tippy(buttons[key], {
+				content: bldg.tooltip + " " + nFormatter(bldg.cps) + " cows per second",
+				placement: "right",
+				arrow: false,
+				theme: "black",
+				maxWidth: "400em",
+				allowHTML: true
+			});
+		});
 	});
 
 	onMount(() => {
 		Object.keys(buttons).forEach(key => {
-			let content = key === "ascend"
-			? "Ascend."
-			: BuildingsAsString[key].tooltip + " " + nFormatter(BuildingsAsString[key].cps) + " cows per second";
+			let content = BuildingsAsString[key].tooltip + " " + nFormatter(BuildingsAsString[key].cps) + " cows per second";
 
 			tippy(buttons[key], {
 				content,
 				placement: "right",
 				arrow: false,
 				theme: "black",
-				maxWidth: "400em"
+				maxWidth: "400em",
+				animateFill: true,
+				allowHTML: true
 			});
 		});
 	});
@@ -608,26 +519,6 @@ function instance($$self, $$props, $$invalidate) {
 		});
 	}
 
-	const mouseenter_handler_1 = () => {
-		$$invalidate(2, showTooltip["ascend"] = true, showTooltip);
-	};
-
-	const mouseleave_handler_1 = () => {
-		$$invalidate(2, showTooltip["ascend"] = false, showTooltip);
-	};
-
-	const click_handler_2 = () => {
-		game.wipeSave();
-		updateState();
-	};
-
-	function button_binding_1($$value) {
-		binding_callbacks[$$value ? "unshift" : "push"](() => {
-			buttons["ascend"] = $$value;
-			$$invalidate(3, buttons);
-		});
-	}
-
 	return [
 		Buildings,
 		game,
@@ -638,11 +529,7 @@ function instance($$self, $$props, $$invalidate) {
 		mouseenter_handler,
 		mouseleave_handler,
 		click_handler_1,
-		button_binding,
-		mouseenter_handler_1,
-		mouseleave_handler_1,
-		click_handler_2,
-		button_binding_1
+		button_binding
 	];
 }
 

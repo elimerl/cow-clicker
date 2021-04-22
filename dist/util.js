@@ -32,5 +32,8 @@ export function nFormatter(num) {
       break;
     }
   }
+  if (num === Infinity) {
+    return num.toLocaleString("fullwide", {useGrouping: false});
+  }
   return Math.floor(num / si[i].value).toLocaleString("fullwide", {useGrouping: false}).replace(rx, "$1") + si[i].symbol;
 }
