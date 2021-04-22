@@ -14,7 +14,7 @@
     Toastify({
       duration: 1000,
       text,
-      gravity: "top", // `top` or `bottom`
+      gravity: "bottom", // `top` or `bottom`
       position: "right", // `left`, `center` or `right`
       close: true,
       //@ts-expect-error
@@ -34,31 +34,32 @@
   let buttons: Record<string, HTMLButtonElement> = {};
   onUnlockListen((bldg) => {
     const key = bldg.constructor.name;
-    setTimeout(() => {
+    requestAnimationFrame(() => {
       tippy(buttons[key], {
         content: bldg.tooltip + " " + nFormatter(bldg.cps) + " cows per second",
         placement: "right",
         arrow: false,
         theme: "black",
         maxWidth: "400em",
+        allowHTML: true,
       });
-    }, 16);
+    });
   });
   onMount(() => {
     Object.keys(buttons).forEach((key) => {
       let content =
-        key === "ascend"
-          ? "Ascend."
-          : BuildingsAsString[key].tooltip +
-            " " +
-            nFormatter(BuildingsAsString[key].cps) +
-            " cows per second";
+        BuildingsAsString[key].tooltip +
+        " " +
+        nFormatter(BuildingsAsString[key].cps) +
+        " cows per second";
       tippy(buttons[key], {
         content,
         placement: "right",
         arrow: false,
         theme: "black",
         maxWidth: "400em",
+        animateFill: true,
+        allowHTML: true,
       });
     });
   });
@@ -112,9 +113,11 @@
 
 <div class="App">
   <div class="big-cow">
-    <p>{nFormatter(game.state.cows)} cow{game.state.cows === 1 ? "" : "s"}</p>
-    <p>{nFormatter(game.getCps())} cows per second</p>
+    <div class="big-text">
+      <p>{nFormatter(game.state.cows)} cow{game.state.cows === 1 ? "" : "s"}</p>
 
+      <p>{nFormatter(game.getCps())} cows per second</p>
+    </div>
     <div
       class="big-cow-click"
       on:click={() => {
@@ -154,26 +157,6 @@
             </button>
           </li>{/if}
       {/each}
-      {#if game.state.cows >= 100000000000000}
-        <li>
-          <button
-            on:mouseenter={() => {
-              showTooltip["ascend"] = true;
-            }}
-            on:mouseleave={() => {
-              showTooltip["ascend"] = false;
-            }}
-            on:click={() => {
-              game.wipeSave();
-              updateState();
-            }}
-            bind:this={buttons["ascend"]}
-            transition:fly={{ y: 200, duration: 1000 }}
-          >
-            Ascend
-          </button>
-        </li>
-      {/if}
     </ul>
   </div>
 </div>
@@ -250,5 +233,8 @@
     margin-left: 10px;
     list-style: none;
     padding: 0;
+  }
+  .big-text {
+    font-size: larger;
   }
 </style>

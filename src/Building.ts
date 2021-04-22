@@ -50,7 +50,7 @@ export class CowAssimilator extends Building {
   cost = 100000;
   cps = 75000;
   tooltip =
-    "Assimilates people into the Cow Collective and turns them into cows. This is ethical, rightttt?";
+    "Assimilates people into the Cow Collective and turns them into cows. This is ethical, <em>righttt</em>?";
 }
 export class CowFactory extends Building {
   cost = 1000000;
